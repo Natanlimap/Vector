@@ -5,6 +5,7 @@
 #include <ctime>
 #include <ratio>
 #include <sys/resource.h>
+#include <cstdlib> 
 
 void swap ( int *a, int* b )
 {
@@ -23,13 +24,21 @@ void print( int * f, int * l )
 
 void Criaedesordem(int *vetor, float desordem, int tamanho){
 	int i;
-	int taxa = desordem*tamanho/2;
-	for(i=0;i<tamanho;i++){
+	int taxa = desordem*tamanho;
+
+	for(int i = 0; i < tamanho;i++){
 		vetor[i] = i;
 	}
-	for(i=0;i<taxa;i++){
-		swap(&vetor[i], &vetor[taxa - i -1]);
+	print(&vetor[0], &vetor[tamanho]);
+	
+	for (int i = 0; i < taxa; i++)
+	{
+		int r = rand() % taxa;
+		int temp = vetor[i];
+		vetor[i] = vetor[r];
+		vetor[r] = temp;
 	}
+	print(&vetor[0], &vetor[tamanho]);
 }
 
 
