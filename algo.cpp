@@ -21,10 +21,10 @@ void print( int * f, int * l )
     std::cout << "] \n";
 }
 
-void Criaedesordem(int vetor[], float desordem, int tamanho){
+void Criaedesordem(int *vetor, float desordem, int tamanho){
 	int i;
 	int taxa = desordem*tamanho/2;
-	for(i=0;i<taxa;i++){
+	for(i=0;i<tamanho;i++){
 		vetor[i] = i;
 	}
 	for(i=0;i<taxa;i++){
