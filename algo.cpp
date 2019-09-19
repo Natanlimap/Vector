@@ -6,7 +6,7 @@
 #include <ratio>
 #include <sys/resource.h>
 #include <cstdlib> 
-
+#include <algorithm> 
 void swap ( int *a, int* b )
 {
     int c;
@@ -24,20 +24,28 @@ void print( int * f, int * l )
 
 void Criaedesordem(int *vetor, float desordem, int tamanho){
 	int i;
-	int taxa = desordem*tamanho;
+	int taxa = desordem*tamanho/2;
+	int embaralhador[tamanho];
 
 	for(int i = 0; i < tamanho;i++){
 		vetor[i] = i;
+		embaralhador[i] = i;
 	}
-	print(&vetor[0], &vetor[tamanho]);
-	
-	for (int i = 0; i < taxa; i++)
-	{
-		int r = rand() % taxa;
-		int temp = vetor[i];
-		vetor[i] = vetor[r];
-		vetor[r] = temp;
-	}
+
+	// for (int i = 0; i < tamanho; i++){
+	// 	int r = rand() % tamanho;
+	// 	int temp = vetor[i];
+	// 	vetor[i] = vetor[r];
+	// 	vetor[r] = temp;
+	// }
+	std::random_shuffle(&vetor[0], &vetor[tamanho]);
+
+		print(&vetor[0], &vetor[tamanho]);
+
+	// for(i=0;i<taxa;i++){
+	// 	swap(&vetor[embaralhador[i]], &vetor[embaralhador[taxa - 1 -i]]);
+	// }
+
 	print(&vetor[0], &vetor[tamanho]);
 }
 
@@ -141,28 +149,27 @@ int selection_sort(int *vetor,int tamanho){
 		}
 } 
 
-void shell_sort(int *a, int size)
+void shell_sort(int *vetor, int size)
 {
- int i , j , value;
- int gap = 1;
+ int i , j , aux;
+ int espaco = 1;
   
  do {
-  gap = 3*gap+1;
- } while(gap < size);
+  espaco = 3*espaco+1;
+ } while(espaco < size);
   
- do {
-  gap /= 3;
-  for(i = gap; i < size; i++) {
-   value = a[i];
-   j = i - gap;
-    
-   while (j >= 0 && value < a[j]) {
-    a[j + gap] = a[j];
-    j -= gap;
+ while(espaco>=1){
+  espaco /= 3;
+  for(i = espaco; i < size; i++) {
+   aux = vetor[i];
+   j = i - espaco;
+   while (j >= 0 && aux < vetor[j]) {
+    vetor[j + espaco] = vetor[j];
+    j -= espaco;
    }
-   a[j + gap] = value;
+   vetor[j + espaco] = aux;
   }
- }while(gap > 1);
+ }
 }
 
 void AlocarMemoria(){
@@ -180,93 +187,132 @@ void AlocarMemoria(){
 	}
 }
 
-void ChamQuickSort(int TamanhoFinal, float Ordenacao){
+void ChamQuickSort(int *vetor, int Tamanho){
 	using namespace std::chrono;
-	int Tamanho = 1;
 	std::cout << "\nquicksort \n";
-	while(TamanhoFinal >= Tamanho){
-	 	high_resolution_clock::time_point t1 = high_resolution_clock::now();
-		for(int i=0;i<5;i++){
-			int vetor[Tamanho];
-			Criaedesordem(vetor, Ordenacao, Tamanho);
-			quicksort(&vetor[0], &vetor[Tamanho]);
-		}
+	//print(&vetor[0], &vetor[Tamanho]);
+	high_resolution_clock::time_point t1 = high_resolution_clock::now();
+	for(int i=0;i<5;i++){
+		quicksort(&vetor[0], &vetor[Tamanho]);
+	}
 		high_resolution_clock::time_point t2 = high_resolution_clock::now();
 		duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
+
+		//print(&vetor[0], &vetor[Tamanho]);
 		std::cout << "[" << Tamanho << "]" << "-->" << "It took me " << time_span.count()/5 << " seconds. \n";
-		Tamanho = Tamanho * 10;
-	}
 }
 
-void ChamMergeSort(int TamanhoFinal, float Ordenacao){
+void ChamMergeSort(int *vetor, int Tamanho){
 	using namespace std::chrono;
-	int Tamanho = 1;
 	std::cout << "\nmergesort \n";
-	while(TamanhoFinal >= Tamanho){
-	 	high_resolution_clock::time_point t1 = high_resolution_clock::now();
-		for(int i=0;i<5;i++){
+	//print(&vetor[0], &vetor[Tamanho]);
+	high_resolution_clock::time_point t1 = high_resolution_clock::now();
+	for(int i=0;i<5;i++){
 
-			int vetor[Tamanho];
-			Criaedesordem(vetor, Ordenacao, Tamanho);
-			mergesort(&vetor[0], &vetor[Tamanho-1]);
-		}
+		mergesort(&vetor[0], &vetor[Tamanho-1]);
+	}
 		high_resolution_clock::time_point t2 = high_resolution_clock::now();
 		duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
+
+		//print(&vetor[0], &vetor[Tamanho]);
 		std::cout << "[" << Tamanho << "]" << "-->" << "It took me " << time_span.count()/5 << " seconds. \n";
-		Tamanho = Tamanho * 10;
-	}
 }
 
-void ChamSelectionSort(int TamanhoFinal, float Ordenacao){
+void ChamSelectionSort(int *vetor, int Tamanho){
 	using namespace std::chrono;
-	int Tamanho = 1;
 	std::cout << "\nselection_sort \n";
-	while(TamanhoFinal >= Tamanho){
-	 	high_resolution_clock::time_point t1 = high_resolution_clock::now();
-		for(int i=0;i<5;i++){
-			int vetor[Tamanho];
-			Criaedesordem(vetor, Ordenacao, Tamanho);
-			selection_sort(vetor, Tamanho);
-		}
+	//print(&vetor[0], &vetor[Tamanho]);
+	high_resolution_clock::time_point t1 = high_resolution_clock::now();
+	for(int i=0;i<5;i++){
+		selection_sort(vetor, Tamanho);
+	}
 		high_resolution_clock::time_point t2 = high_resolution_clock::now();
 		duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
+
+		//print(&vetor[0], &vetor[Tamanho]);
 		std::cout << "[" << Tamanho << "]" << "-->" << "It took me " << time_span.count()/5 << " seconds. \n";
-		Tamanho = Tamanho * 10;
-	}
 }
 
-void ChamShellSort(int TamanhoFinal, float Ordenacao){
+void ChamShellSort(int *vetor, int Tamanho){
 	using namespace std::chrono;
-	int Tamanho = 1;
 	std::cout << "\nshell_sort \n";
-	while(TamanhoFinal >= Tamanho){
+		//print(&vetor[0], &vetor[Tamanho]);
 	 	high_resolution_clock::time_point t1 = high_resolution_clock::now();
 		for(int i=0;i<5;i++){
-			int vetor[Tamanho];
-			Criaedesordem(vetor, Ordenacao, Tamanho);
 			shell_sort(vetor, Tamanho);
 		}
 		high_resolution_clock::time_point t2 = high_resolution_clock::now();
 		duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
+		//print(&vetor[0], &vetor[Tamanho]);	
 		std::cout << "[" << Tamanho << "]" << "-->" << "It took me " << time_span.count()/5 << " seconds. \n";
-		Tamanho = Tamanho * 10;
+	
+	
+}
+
+void vetores(int *vetor, int *vetor2, int *vetor3, int *vetor4, int tamanho, float Ordenacao);
+void vetores(int *vetor, int *vetor2, int *vetor3, int *vetor4, int tamanho, float Ordenacao){
+	int i;
+	for(i=0;i<tamanho;i++){
+		vetor[i]=i;
 	}
+	for(i=0;i<tamanho;i++){
+		vetor2[i] = vetor3[i] = vetor4[i] = vetor[i];
+	}
+
 }
 
 int main(){
-	int TamanhoFinal;
+	int TamanhoFinal, Tamanho = 1;
 	float Ordenacao;
-	float Ord[4] = {0, 0.5, 0.75, 1};
+	float Ord[4] = {0, 0.25, 0.5, 1};
 	using namespace std::chrono;
 	std::cout << "Digite o tamanho do vetor \n";
 	std::cin >> TamanhoFinal; 
 	for(int i=0;i<4;i++){
 		Ordenacao = Ord[i];
 		std::cout << "\n\n\n fator ordenacao: " << Ordenacao << "\n\n\n";
-
-		ChamMergeSort(TamanhoFinal, Ordenacao);
-		ChamQuickSort(TamanhoFinal, Ordenacao);
-		ChamSelectionSort(TamanhoFinal, Ordenacao);
-		ChamShellSort(TamanhoFinal, Ordenacao);
-	} 
+		while(TamanhoFinal >= Tamanho){
+			int vetor[Tamanho];
+			int vetor2[Tamanho];
+			int vetor3[Tamanho];
+			int vetor4[Tamanho];
+			vetores(vetor, vetor2, vetor3, vetor4, Tamanho, Ordenacao);	
+			ChamMergeSort(vetor, Tamanho);
+			ChamQuickSort(vetor2, Tamanho);
+			ChamSelectionSort(vetor3, Tamanho);
+			ChamShellSort(vetor4, Tamanho);
+			Tamanho = Tamanho * 10;
+		}
+		Tamanho = 1;
+	}
 }
+
+
+
+
+
+
+
+// class gnuplot {
+// public: 
+// 	gnuplot();
+// 	-gnuplot();
+// 	void operator () (const strig & command);
+// protected:
+// 	FILE *gnuplotpipe;
+// };
+// gnuplot::gnuplot(){
+// 	gnuplotpipe = popen("gnuplot -persist", "w");
+// 	if (!gnuplotpipe){
+// 		cerr<<("Gnuplot not found!")
+// 	}
+// }
+// gnuplot::-gnuplot(){
+// 	fprintf(gnuplotpipe,"exit\n");
+// 	pclose(gnuplotpipe);
+// }
+// void gnuplot::operator() (const string & command){
+// 	fprintf(gnuplotpipe, "%s\n",command.c_str());
+// 	fflush(gnuplotpipe);
+// }
+// #endif
