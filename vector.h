@@ -17,6 +17,7 @@ namespace sc { // sequence container
             T *data; //!< Area de armaznamento.
 
         public:
+        	size_t lenght;
 
             class iterator{
 
@@ -64,12 +65,19 @@ namespace sc { // sequence container
 
             vector()
 
-            {
-
-
+            {	
+            	lenght = SIZE;
                 std::fill( &data[0], &data[SIZE], T() );
 
             }
+            ~vector()
+
+            {	
+            	lenght = SIZE;
+                std::fill( &data[0], &data[SIZE], T() );
+
+            }
+
 
 
             vector( const std::initializer_list<T> & il ) //inicializador de informações
@@ -158,25 +166,24 @@ namespace sc { // sequence container
 
             // TODO: implementar os back()s.
 
-            
+        
 
             void fill ( const T & value )
 
             {
+                std::fill( &data[0], &data[SIZE], value );
 
-                /*
+            }
+             void resize (int value)
 
-                for ( int i{0} ; i < SIZE ; ++i )
+            {
+            	T *newdata;
+            	newdata = data;
 
-                    data[i] = value;
+            	for(int i = 0; i< lenght;i++){
 
-                    */
+            	}
 
-                for ( T & e : data )
-                    e = value;
-
-
-                //std::fill( &data[0], &data[SIZE], value );
 
             }
             iterator begin(void){return iterator( &data[0]);}

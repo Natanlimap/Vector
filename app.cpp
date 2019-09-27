@@ -33,5 +33,7 @@ int main(void){
 	std::cout << ">>> Vetor A" << A << std::endl;
 	std::cout << ">>> Vetor B" << B << std::endl;
 	std::cout << ">>> Vetor C" << C << std::endl;
+	//A.resize(15);
+	//std::cout << ">>> Vetor A" << A << std::endl;
 	return 0;
 }
