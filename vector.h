@@ -1,5 +1,5 @@
-#ifndef ARRAY_H
-#define ARRAY_H
+#ifndef VECTOR_H
+#define VECTOR_H
 
 
 #include <cstdlib> // size_t
@@ -8,13 +8,13 @@
 namespace sc { // sequence container
   template < typename T, size_t SIZE >
 
-    class array
+    class vector
 
     {
 
         private:
 
-            T data[ SIZE ]; //!< Area de armaznamento.
+            T *data; //!< Area de armaznamento.
 
         public:
 
@@ -62,15 +62,9 @@ namespace sc { // sequence container
 
         public:
 
-            array()
+            vector()
 
             {
-
-                // Inicializando os dados.
-
-                //for ( int i{0} ; i < SIZE ; ++i )
-
-                //    data[i] = T(); // ""
 
 
                 std::fill( &data[0], &data[SIZE], T() );
@@ -78,37 +72,13 @@ namespace sc { // sequence container
             }
 
 
-            array( const std::initializer_list<T> & il )
-
+            vector( const std::initializer_list<T> & il ) //inicializador de informações
             {
 
-                /*
 
-                // Ranged - for
-
-                size_t i{0};
-
-                for ( T e : il )
-
-                {
-
-                    if ( i > SIZE ) break
-
-                    data[i++] = e;
-
-                }
-
-                */
-
-
-                std::copy( il.begin(),
-
-                           il.begin() + std::min( SIZE, il.size() ),
-
-&data[0] );
+                std::copy( il.begin(), il.begin() + std::min( SIZE, il.size() ),&data[0] );
 
             }
-
 
 
             size_t size() { return SIZE; }

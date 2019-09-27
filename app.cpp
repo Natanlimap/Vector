@@ -4,7 +4,7 @@
 #include "vector.h"
 
 template <typename T, size_t SIZE >
-std::ostream & operator<<( std::ostream & os, const sc::array <T, SIZE> & a ){
+std::ostream & operator<<( std::ostream & os, const sc::vector <T, SIZE> & a ){
 	
 	os<< "[|";
 	for (size_t i{0u}; i < SIZE ; i++){
@@ -18,9 +18,9 @@ std::ostream & operator<<( std::ostream & os, const sc::array <T, SIZE> & a ){
 int main(void){
 
    
-	sc::array < int, 10 > A{1,2,3,4,5, 99, 22, 32, 76, 34};
-	sc::array < int, 10 > B;
-	sc::array < int, 10 > C(A); //construtor copia
+	sc::vector < int, 10 > A{1,2,3,4,5, 99, 22, 32, 76, 34};
+	sc::vector < int, 10 > B;
+	sc::vector < int, 10 > C(A); //construtor copia
 
 	//B = A; //sobrecarga
 	try{
