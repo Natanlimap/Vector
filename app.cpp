@@ -3,7 +3,7 @@
 
 #include "vector.h"
 
-template <typename T, size_t SIZE >
+template <typename T >
 std::ostream & operator<<( std::ostream & os, const sc::vector <T, SIZE> & a ){
 	
 	os<< "[|";
@@ -18,9 +18,9 @@ std::ostream & operator<<( std::ostream & os, const sc::vector <T, SIZE> & a ){
 int main(void){
 
    
-	sc::vector < int, 10 > A{1,2,3,4,5, 99, 22, 32, 76, 34};
-	sc::vector < int, 10 > B;
-	sc::vector < int, 10 > C(A); //construtor copia
+	sc::vector < int > A{1,2,3,4,5, 99, 22, 32, 76, 34};
+	sc::vector < int > B;
+	sc::vector < int > C(A); //construtor copia
 
 	//B = A; //sobrecarga
 	try{
