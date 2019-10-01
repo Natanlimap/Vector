@@ -31,10 +31,6 @@ namespace sc { // sequence container
                 		iterator operator= (const iterator rhs){this->ptr = rhs.ptr; }
                         T& operator*(void){return ptr;}
                        	iterator operator+(size_t offset){ptr += offset; }
-                        // operator=()     // it = it2;
-
-                        // operator*()     // x = *it'
-
                         // operator++()    // ++it, pre-incremento
 
                         // operator++(int) // it++, pos-incremento.
@@ -82,10 +78,7 @@ namespace sc { // sequence container
 
             vector( const std::initializer_list<T> & il ) //inicializador de informações
             {
-
-
-                std::copy( il.begin(), il.begin() + std::min( SIZE, il.size() ),&data[0] );
-
+                std::copy( il.begin(), il.begin() + std::min( SIZE, il.size() ),&data[0]);
             }
 
 
@@ -187,6 +180,7 @@ namespace sc { // sequence container
 
             }
             iterator begin(void){return iterator( &data[0]);}
+            
 
 }; // namespace sc
 
