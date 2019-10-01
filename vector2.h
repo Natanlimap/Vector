@@ -16,21 +16,28 @@ namespace sc{ //sequence container
         Vector(size_t cap=1){
         	 m_capacity = cap;
    			 m_end = 0;
-   			// m_data = (T*)malloc(m_capacity * sizeof(*m_data));
    			 m_data = new T [cap];
   			 if (!m_data)
 				throw std::bad_alloc();
         }
         ~Vector(){
-        	free(m_data);
+        	delete[]m_data;
         }
 
-        void resize() {
-		    size_t capacity = m_capacity*2;
-		    T *tmp = (T*)realloc(m_data, capacity * sizeof(*m_data));
+        void reserve(size_t capacity){
+		    T *tmp = new T[capacity];
+		    for(size_t i = 0; i < capacity; i++){
+		    	if(i < m_capacity){
+		    		tmp[i] = m_data[i];
+		    	}else{
+		    		tmp[i] = T();
+		    	}
+		    }
+		    delete[]m_data;
+		    m_data = tmp;
 		    // if (!tmp)
 		    //     throw std::bad_alloc();
-		    m_data = tmp;
+		    
 		    m_capacity = capacity;
 		}
 
@@ -76,24 +83,11 @@ namespace sc{ //sequence container
         // }
         void push_back(const T & e){
         	if(full()){
-        		resize();
+        		reserve(m_capacity*2);
         	}
         		this->m_data[m_end++] = e;
         }
-         const T& front() const
+     
 
-            {
-
-                return data[0];
-
-            }
-
-            T& front()
-
-            {
-
-                return data[0];
-
-            }
 	};
 }
