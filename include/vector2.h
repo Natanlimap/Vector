@@ -6,7 +6,7 @@
 
 namespace sc{ //sequence container
 	template <typename T>
-	class Vector{
+	class vector{
 
 	private: 
 		size_t m_end;
@@ -14,16 +14,16 @@ namespace sc{ //sequence container
         T* m_data;
 	public:
 		
-        Vector(size_t cap=1){ //constructor normal
+        vector(size_t cap=1){ //constructor normal
         	 m_capacity = cap;
    			 m_end = 0;
    			 m_data = new T[m_capacity];
 
         }
-        ~Vector(){
+        ~vector(){
         	delete[]m_data;
         }
-        Vector(Vector<T>const& m_old){    //constructor copy
+        vector(vector<T>const& m_old){    //constructor copy
             m_capacity = m_old.capacity();
             m_end = m_old.size();
             m_data = new T[m_capacity];
@@ -31,7 +31,7 @@ namespace sc{ //sequence container
                 m_data[i] = m_old[i]; 
             }
         }
-         Vector( const std::initializer_list<T> & il ){ //inicializador de informações
+         vector( const std::initializer_list<T> & il ){ //inicializador de informações
             m_capacity = il.size();
             m_end = il.size();
             m_data = new T[m_capacity];
@@ -39,6 +39,14 @@ namespace sc{ //sequence container
                 m_data[i] = *(il.begin() + i);
             }
         }
+        // vector(iterator first, iterator last){
+        //     m_capacity = std::distance(first, last);
+        //     m_end = m_capacity;
+        //     m_data = new T[m_capacity];
+        //     for(size_t i = 0 ; i<m_end;i++){
+        //         this->m_data[i] = first + i;
+        //     }
+        // }
 
         void reserve(size_t new_cap){
 		    T *tmp = new T[new_cap];
@@ -80,7 +88,7 @@ namespace sc{ //sequence container
         
         void print(){
         	size_t i = 0;
-            std::cout <<"Vector ->> [";
+            std::cout <<"vector ->> [";
         	while(i < m_end){
         		std::cout << m_data[i] << "|";
         		i++;
@@ -89,12 +97,24 @@ namespace sc{ //sequence container
         	std::cout<<std::endl;
         }
 
-		const T& operator[]( size_t  idx ) const{
-             return m_data[idx];
+		const T& operator[]( size_t  index ) const{
+             return m_data[index];
         }
 
-        T& operator[]( size_t  idx ){
-             return m_data[idx];
+        T& operator[]( size_t  index ){
+             return m_data[index];
+        }
+
+        // const T& at( size_t  index ) const{
+        //         if ( index >= m_end)
+        //             throw std::out_of_range("Indice invalido!");    
+        //         return m_data[index];
+        // }
+
+        T& at( size_t  index ) const{
+                if ( index >= m_end)
+                   throw std::out_of_range("Indice invalido!");                
+                return m_data[index];
         }
 
         bool empty(){
@@ -103,7 +123,7 @@ namespace sc{ //sequence container
         bool full(){
         	return m_end == m_capacity;
         }
-        // T Vector<T>::pop(){
+        // T vector<T>::pop(){
         // 	return *(m_data + --m_end);
         // }
         void clear(){
@@ -157,9 +177,13 @@ namespace sc{ //sequence container
                     iterator operator++(int){ptr++; }
                     iterator operator--(){--ptr; }
                     iterator operator--(int){ptr--; }
-                    iterator operator-(int value){this->ptr = ptr - value;}
-                    iterator operator+(int value){this->ptr = ptr + value;}
-                    iterator operator==(const iterator rhs){this->ptr == rhs.ptr;}
+
+                    iterator operator-(int value){this->ptr = this->ptr - value;}
+                    iterator operator+(int value){this->ptr = this->ptr + value;}
+                    iterator operator==(const iterator rhs){*this->ptr == *rhs.ptr;}
+                    iterator operator!=(const iterator rhs){*this->ptr != *rhs.ptr;}
+          
+
      };
      class const_iterator{
          const_iterator cbegin(void) const{return iterator(&m_data[0]);}

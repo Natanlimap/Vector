@@ -1,189 +1,270 @@
-#ifndef VECTOR_H
-#define VECTOR_H
-
-
+#include <iostream>
 #include <cstdlib> // size_t
 #include <initializer_list> // std::initializer_list
-#include <algorithm> // std::copy()
-namespace sc { // sequence container
-  template < typename T, size_t SIZE >
+#include <algorithm> 
 
-    class vector
 
-    {
+namespace sc{ //sequence container
+	template <typename T>
+	class vector{
 
-        private:
+	private: 
+		size_t m_end;
+        size_t m_capacity;
+        T* m_data;
 
-            T *data; //!< Area de armaznamento.
-
-        public:
-        	size_t lenght;
-
-            class iterator{
-
+	public:
+         //ITERATORS
+        class iterator{
                 private:
-
                     T *ptr;
-
                 public:
+                    iterator(T * pt=nullptr ) : ptr{ pt }{}      // it( )
+                    T& operator*(void){return *ptr;}
+                    iterator operator= (const iterator rhs){this->ptr = rhs.ptr; }
+                    iterator operator+(size_t offset){ptr += offset; }
+                    iterator operator++(){++ptr; }
+                    iterator operator++(int){ptr++; }
+                    iterator operator--(){--ptr; }
+                    iterator operator--(int){ptr--; }
+                    iterator friend operator+(int n, iterator it){return it+n;}
+                    iterator friend operator+(iterator it, int n){return n + it;}
+                    iterator friend operator-(int n, iterator it){return it-n;}
+                    iterator friend operator-(iterator it, int n){return n-it;}
 
-                        iterator(T * pt=nullptr ) : ptr{ pt } {/*empty*/}      // it( )
-                		iterator operator= (const iterator rhs){this->ptr = rhs.ptr; }
-                        T& operator*(void){return ptr;}
-                       	iterator operator+(size_t offset){ptr += offset; }
-                        // operator++()    // ++it, pre-incremento
+                  
+                    bool operator==(const iterator rhs){return *this->ptr == *rhs.ptr;}
+                    bool operator!=(const iterator rhs){return *this->ptr != *rhs.ptr;}
+                    bool operator>(const iterator rhs){return this->ptr > rhs.ptr;}
+          
 
-                        // operator++(int) // it++, pos-incremento.
-
-                        // operator--()    //  --it
-
-                        // operator--(int) // it--
-
-                        // operator==()    // it == it2
-
-                        // operator!=()    // it != it2
-
-                        // operator-()     // it1 - it2
-
-            };
-
-
-            class const_iterator{
-
-                private:
-
-                    T *ptr;
-
-            };
-
+     };
+     class const_iterator{
+        private:
+        T *ptr;
+        public: 
+         const_iterator cbegin(void) const{return iterator(&m_data[0]);}
+         const_iterator cend(void) const{return iterator(&m_data[m_end]);}
+     };
 
         public:
 
-            vector()
+        vector(size_t cap=1){ //constructor normal
+        	 m_capacity = 0;
+   			 m_end = 0;
+   			 m_data = new T[m_capacity];
 
-            {	
-            	lenght = SIZE;
-                std::fill( &data[0], &data[SIZE], T() );
-
+        }
+        ~vector(){
+        	delete[]m_data;
+        }
+        vector(vector<T>const& m_old){    //constructor copy
+            m_capacity = m_old.capacity();
+            m_end = m_old.size();
+            m_data = new T[m_capacity];
+            for(size_t i = 0; i < m_capacity; i++){
+                m_data[i] = m_old[i]; 
             }
-            ~vector()
-
-            {	
-            	lenght = SIZE;
-                std::fill( &data[0], &data[SIZE], T() );
-
+        }
+         vector( const std::initializer_list<T> & il ){ //inicializador de informações
+            m_capacity = il.size();
+            m_end = il.size();
+            m_data = new T[m_capacity];
+            for(size_t i = 0; i < m_end;i++){
+                m_data[i] = *(il.begin() + i);
             }
+        }
+        // vector(iterator first, iterator last){
+        //     m_capacity = std::distance(first, last);
+        //     m_end = m_capacity;
+        //     m_data = new T[m_capacity];
+        //     for(size_t i = 0 ; i<m_end;i++){
+        //         this->m_data[i] = first + i;
+        //     }
+        // }
 
-
-
-            vector( const std::initializer_list<T> & il ) //inicializador de informações
-            {
-                std::copy( il.begin(), il.begin() + std::min( SIZE, il.size() ),&data[0]);
+        void reserve(size_t new_cap){
+            if(new_cap == 0){
+                new_cap = 1;
             }
-
-
-            size_t size() { return SIZE; }
-
-
-            //== Element access methods
-
-            const T& operator[]( size_t  idx ) const
-
-            {
-
-                return data[idx];
-
+		    T *tmp = new T[new_cap];
+		    for(size_t i = 0; i < new_cap; i++){
+		    	if(i < m_capacity){
+		    		tmp[i] = m_data[i];
+		    	}else{
+		    		tmp[i] = T();
+		    	}
+		    }
+		    delete[]m_data;
+		    m_data = tmp;
+		     if (!tmp)
+		         throw std::bad_alloc();
+             if(m_capacity > new_cap){
+                m_end = new_cap;
+             }
+		    m_capacity = new_cap;
+		}
+   
+        void pop_back(){
+            if(m_end>0){
+                --m_end;
             }
-
-
-            T& operator[]( size_t  idx )
-
-            {
-
-                return data[idx];
-
+        }
+        void pop_front(){
+            for(size_t i = 0 ; i< m_end;i++){
+                m_data[i] = m_data[i+1];
             }
+            m_end--;
+        }
 
+        size_t size() const{
+            return m_end;
+        }
+        size_t capacity() const{
+            return m_capacity;
 
-            const T& at( size_t  idx ) const
-
-            {
-
-                if ( idx >= SIZE )
-
-                    throw std::out_of_range("Indice invalido!");
-
-
-                return data[idx];
-
-            }
-
-
-            T& at( size_t  idx )
-
-            {
-
-                if ( idx >= SIZE )
-
-                    throw std::out_of_range("Indice invalido!");
-
-
-                return data[idx];
-
-            }
-
-
-            //=== Element access methods
-
-            
-
-            // Access and retrurns the first element.
-
-            const T& front() const
-
-            {
-
-                return data[0];
-
-            }
-
-            T& front()
-
-            {
-
-                return data[0];
-
-            }
-
-            //back()
-
-            // TODO: implementar os back()s.
-
+        }
         
+        void print(){
+        	size_t i = 0;
+            std::cout <<"vector ->> [";
+        	while(i < m_end){
+        		std::cout << m_data[i] << "|";
+        		i++;
+        	}
+            std::cout <<"]";
+        	std::cout<<std::endl;
+        }
 
-            void fill ( const T & value )
+		const T& operator[]( size_t  index ) const{
+             return m_data[index];
+        }
 
-            {
-                std::fill( &data[0], &data[SIZE], value );
+        T& operator[]( size_t  index ){
+             return m_data[index];
+        }
+
+        // const T& at( size_t  index ) const{
+        //         if ( index >= m_end)
+        //             throw std::out_of_range("Indice invalido!");    
+        //         return m_data[index];
+        // }
+
+        T& at( size_t  index ) const{
+                if ( index >= m_end)
+                   throw std::out_of_range("Indice invalido!");                
+                return m_data[index];
+        }
+        bool operator==(const vector<T> idx ) const{
+            for(size_t i = 0; i < m_end;i++){
+                if(m_data[i]!= idx[i]){
+                    return false;
+                }
+            }
+                return true;
+
+        }
+         
+        const bool operator!=(const vector<T> idx ) const{
+             for(size_t i = 0; i < m_end;i++){
+                if(m_data[i]!= idx[i]){
+                    return true;
+                }
+             }
+                return false;
+
+        }
+        bool operator!=(const vector <T> idx ){
+            for(size_t i = 0; i < m_end;i++){
+                if(m_data[i]!= idx[i]){
+                    return true;
+                }
+            }
+                return false;
+        }
+
+        const T& front() const{
+            return m_data[0];
+
+        }
+        T& front(){
+            return m_data[0];
+
+        }
+        const T& back() const{
+            return m_data[m_end];
+
+        }
+        T& back(){
+            return m_data[m_end];
+
+        }
+
+        bool empty(){
+        	return m_end == 0;
+        }
+        bool full(){
+        	return m_end == m_capacity;
+        }
+        // T vector<T>::pop(){
+        // 	return *(m_data + --m_end);
+        // }
+        void clear(){
+            for(size_t i =0; i<m_end;i++){
+                m_data[i]=T();
+            }
+            m_end = 0;
+        }
+        void push_back(const T & e){
+        	if(full()){
+        		reserve(m_capacity*2);
+        	}
+        		this->m_data[m_end++] = e;
+        }
+        void push_front(const T & e){
+            if(full()){
+                reserve(m_capacity*2);
+            }   
+            for(size_t i = ++m_end;i>0;i--){
+               this-> m_data[i] = this->m_data[i-1];
+            }
+            this->m_data[0] = e;
+        }  
+        void insert (iterator position, const T& val){
+           if(full()){
+                reserve(m_capacity*2);
+            }
+            T *last;
+            last = &m_data[m_end+1];
+            while(position>last){
+                *last = *(last-1);
+                last--;
+             }
+            *position = val;
+
+        }
+        void assign( size_t count, const T & value ){
+            reserve(count);
+            for(size_t i = 0; i < count ; i++){
+                this-> m_data[i] = value;
+            }
+        }
+        void shrink_to_fit(){
+            if(full()){
 
             }
-             void resize (int value)
-
-            {
-            	T *newdata;
-            	newdata = data;
-
-            	for(int i = 0; i< lenght;i++){
-
-            	}
-
-
+            else{
+                reserve(m_end);
             }
-            iterator begin(void){return iterator( &data[0]);}
-            
+        }
+        void eraser(){
 
-}; // namespace sc
+        }
+       
+        iterator begin(){return iterator( &m_data[0]);}
+        iterator end(){return iterator( &m_data[m_end]);}
+        const_iterator cbegin() const{return iterator(&m_data[0]);}
+        const_iterator cend() const{return iterator(&m_data[m_end]);}
 
-
-#endif
-
+    };
+}
