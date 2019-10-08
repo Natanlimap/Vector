@@ -21,16 +21,19 @@ namespace sc{ //sequence container
                 public:
                     iterator(T * pt=nullptr ) : ptr{ pt }{}      // it( )
                     T& operator*(void){return *ptr;}
+                    T*& operator&(void){return ptr;}
+                    T*& operator->(void){return ptr;}
                     iterator operator= (const iterator rhs){this->ptr = rhs.ptr; }
                     iterator operator+(size_t offset){ptr += offset; }
+                    iterator operator-(size_t offset){ptr -= offset; }
                     iterator operator++(){++ptr; }
                     iterator operator++(int){ptr++; }
                     iterator operator--(){--ptr; }
                     iterator operator--(int){ptr--; }
-                    iterator friend operator+(int n, iterator it){return it+n;}
-                    iterator friend operator+(iterator it, int n){return n + it;}
-                    iterator friend operator-(int n, iterator it){return it-n;}
-                    iterator friend operator-(iterator it, int n){return n-it;}
+                    friend iterator operator+(int n, iterator it){return it+n;}
+                    friend iterator operator+(iterator it, int n){return n + it;}
+                    friend iterator operator-(int n, iterator it){return it-n;}
+                    friend iterator operator-(iterator it, int n){return n-it;}
 
                   
                     bool operator==(const iterator rhs){return *this->ptr == *rhs.ptr;}
@@ -49,14 +52,11 @@ namespace sc{ //sequence container
 
         public:
 
-        vector(size_t cap=1){ //constructor normal
+        vector(){ //constructor normal
         	 m_capacity = 0;
    			 m_end = 0;
    			 m_data = new T[m_capacity];
 
-        }
-        ~vector(){
-        	delete[]m_data;
         }
         vector(vector<T>const& m_old){    //constructor copy
             m_capacity = m_old.capacity();
@@ -66,7 +66,7 @@ namespace sc{ //sequence container
                 m_data[i] = m_old[i]; 
             }
         }
-         vector( const std::initializer_list<T> & il ){ //inicializador de informações
+         vector(const std::initializer_list<T> & il ){ //inicializador de informações
             m_capacity = il.size();
             m_end = il.size();
             m_data = new T[m_capacity];
@@ -74,15 +74,21 @@ namespace sc{ //sequence container
                 m_data[i] = *(il.begin() + i);
             }
         }
-        // vector(iterator first, iterator last){
-        //     m_capacity = std::distance(first, last);
-        //     m_end = m_capacity;
-        //     m_data = new T[m_capacity];
-        //     for(size_t i = 0 ; i<m_end;i++){
-        //         this->m_data[i] = first + i;
-        //     }
-        // }
-
+        vector(iterator it, iterator it2){
+            T *first;
+            T *last;
+            first = &it;
+            last = &it2;
+            m_capacity = last - first ;
+            m_end = m_capacity;
+            m_data = new T[m_capacity];
+            for(size_t i = 0 ; i<m_end;i++){
+                this->m_data[i] = *(first + i);
+            }
+        }
+        ~vector(){
+        	delete[]m_data;
+        }
         void reserve(size_t new_cap){
             if(new_cap == 0){
                 new_cap = 1;
@@ -142,13 +148,7 @@ namespace sc{ //sequence container
 
         T& operator[]( size_t  index ){
              return m_data[index];
-        }
-
-        // const T& at( size_t  index ) const{
-        //         if ( index >= m_end)
-        //             throw std::out_of_range("Indice invalido!");    
-        //         return m_data[index];
-        // }
+        }   
 
         T& at( size_t  index ) const{
                 if ( index >= m_end)
@@ -206,9 +206,7 @@ namespace sc{ //sequence container
         bool full(){
         	return m_end == m_capacity;
         }
-        // T vector<T>::pop(){
-        // 	return *(m_data + --m_end);
-        // }
+      
         void clear(){
             for(size_t i =0; i<m_end;i++){
                 m_data[i]=T();
@@ -250,21 +248,24 @@ namespace sc{ //sequence container
             }
         }
         void shrink_to_fit(){
-            if(full()){
-
-            }
-            else{
-                reserve(m_end);
-            }
-        }
-        void eraser(){
-
+            reserve(m_end);
         }
        
-        iterator begin(){return iterator( &m_data[0]);}
-        iterator end(){return iterator( &m_data[m_end]);}
+        iterator begin(){return iterator(&m_data[0]);}
+        iterator end(){return iterator(&m_data[m_end]);}
         const_iterator cbegin() const{return iterator(&m_data[0]);}
         const_iterator cend() const{return iterator(&m_data[m_end]);}
+        
+        void erase(iterator it){
+            T *first;
+            T *last;
+            first = &it;
+            last = &m_data[m_end-1];
+            while(first<last){
+                 *first = *(first+1);
+                first++;
+            }
+        }
 
     };
 }
