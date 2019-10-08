@@ -1,0 +1,3 @@
+/home/natan/vector/CMakeFiles/rebuild_cache.dir
+/home/natan/vector/CMakeFiles/run_tests.dir
+/home/natan/vector/CMakeFiles/edit_cache.dir

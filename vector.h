@@ -24,12 +24,12 @@ namespace sc{ //sequence container
                     T*& operator&(void){return ptr;}
                     T*& operator->(void){return ptr;}
                     iterator operator= (const iterator rhs){this->ptr = rhs.ptr; }
-                    iterator operator+(size_t offset){ptr += offset; }
-                    iterator operator-(size_t offset){ptr -= offset; }
-                    iterator operator++(){++ptr; }
-                    iterator operator++(int){ptr++; }
-                    iterator operator--(){--ptr; }
-                    iterator operator--(int){ptr--; }
+                    iterator operator+(size_t offset){return ptr += offset;}
+                    iterator operator-(size_t offset){return ptr -= offset }
+                    iterator operator++(){return ++ptr;}
+                    iterator operator++(int){return ptr++;}
+                    iterator operator--(){return --ptr;}
+                    iterator operator--(int){return ptr--;}
                     friend iterator operator+(int n, iterator it){return it+n;}
                     friend iterator operator+(iterator it, int n){return n + it;}
                     friend iterator operator-(int n, iterator it){return it-n;}
@@ -65,6 +65,11 @@ namespace sc{ //sequence container
             for(size_t i = 0; i < m_capacity; i++){
                 m_data[i] = m_old[i]; 
             }
+        }
+         vector(size_t a){    //constructor copy
+            m_capacity = a;
+            m_end = 0;
+            m_data = new T[m_capacity];
         }
          vector(const std::initializer_list<T> & il ){ //inicializador de informações
             m_capacity = il.size();
