@@ -26,8 +26,9 @@ namespace sc{ //sequence container
                     iterator operator= (const iterator rhs){this->ptr = rhs.ptr; }
                     iterator operator+(size_t offset){ptr += offset; }
                     iterator operator-(size_t offset){ptr -= offset; }
-                    iterator operator++(){return ++ptr; }
-                    iterator operator++(int){return ptr++; }
+                    iterator operator-(const iterator rhs){this->ptr = this->ptr - rhs.ptr; }
+                    iterator operator++(){ ++ptr; }
+                    iterator operator++(int){ ptr++; }
                     iterator operator--(){--ptr; }
                     iterator operator--(int){ptr--; }
                     friend iterator operator+(int n, iterator it){return it+n;}
@@ -39,6 +40,7 @@ namespace sc{ //sequence container
                     bool operator==(const iterator rhs){return *this->ptr == *rhs.ptr;}
                     bool operator!=(const iterator rhs){return *this->ptr != *rhs.ptr;}
                     bool operator>(const iterator rhs){return this->ptr > rhs.ptr;}
+                    bool operator<(const iterator rhs){return this->ptr < rhs.ptr;}
           
 
      };
@@ -95,7 +97,7 @@ namespace sc{ //sequence container
         	delete[]m_data;
         }
         void reserve(size_t new_cap){
-            if(new_cap == 0){
+            if(m_capacity == 0){
                 new_cap = 1;
             }
 		    T *tmp = new T[new_cap];
@@ -112,13 +114,14 @@ namespace sc{ //sequence container
 		         throw std::bad_alloc();
              if(m_capacity > new_cap){
                 m_end = new_cap;
+             }else{
+                m_capacity = new_cap;
              }
-		    m_capacity = new_cap;
 		}
    
         void pop_back(){
             if(m_end>0){
-                --m_end;
+                m_end--;
             }
         }
         void pop_front(){
@@ -131,6 +134,7 @@ namespace sc{ //sequence container
         size_t size() const{
             return m_end;
         }
+
         size_t capacity() const{
             return m_capacity;
 
@@ -161,14 +165,12 @@ namespace sc{ //sequence container
                 return m_data[index];
         }
         bool operator==(const vector<T> idx ) const{
-            for(size_t i = 0; i < m_end;i++){
-                if(m_data[i]!= idx[i]){
-                    return false;
+            if(m_end == idx.size()){
+                    return true;
                 }
+                return false;
             }
-                return true;
 
-        }
          
         const bool operator!=(const vector<T> idx ) const{
              for(size_t i = 0; i < m_end;i++){
@@ -197,11 +199,11 @@ namespace sc{ //sequence container
 
         }
         const T& back() const{
-            return m_data[m_end];
+            return m_data[m_end-1];
 
         }
         T& back(){
-            return m_data[m_end];
+            return m_data[m_end-1];
 
         }
 
@@ -237,10 +239,11 @@ namespace sc{ //sequence container
            if(full()){
                 reserve(m_capacity*2);
             }
+            m_end++;
             T *last;
             last = &m_data[m_end+1];
             while(position>last){
-                *last = *(last-1);
+                *(last) = *(last-1);
                 last--;
              }
             *position = val;
@@ -251,9 +254,12 @@ namespace sc{ //sequence container
             for(size_t i = 0; i < count ; i++){
                 this-> m_data[i] = value;
             }
+
         }
         void shrink_to_fit(){
+            m_capacity = m_end;
             reserve(m_end);
+
         }
        
         iterator begin(){return iterator(&m_data[0]);}
