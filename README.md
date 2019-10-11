@@ -1,9 +1,13 @@
 <!-- TABLE OF CONTENTS -->
-## Table of Contents
+##Table of Contents
 
-* [The project](#About the Project)
-  * [Built With](#built-with)
-
+* [About the project](#About the Project)
+* [Installing](### Installing)
+* [Running the tests](## Running the tests)
+* [The tests](## The tests)
+* [Author](## Author)
+* [License](## License)
+* [Acknowledgments](## Acknowledgments)
 
 # About the project
   This project was requested by a basic data structure teacher, Selan Rodrigues dos Santos, from UFRN, with the porpuse to implement a List Abstract Data Type.
@@ -47,5 +51,5 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-* I would like to remind that some parts of this code were inspired by classroom implementations with the presence and participation of the Basic Data Structure 1 discipline's teacher and classmates in 2019.2, taught by Selan Rodrigues dos Santos, from Universidade Federal do Rio Grande do Norte.
+It is also important to remind that some parts of this code were inspired by classroom implementations with the presence and participation of the Basic Data Structure 1 discipline's teacher and classmates in 2019.2, taught by Selan Rodrigues dos Santos, from Universidade Federal do Rio Grande do Norte.
 
