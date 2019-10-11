@@ -1,0 +1,4 @@
+/home/natan/Documentos/Vector/build/CMakeFiles/rebuild_cache.dir
+/home/natan/Documentos/Vector/build/CMakeFiles/edit_cache.dir
+/home/natan/Documentos/Vector/build/CMakeFiles/run_tests.dir
+/home/natan/Documentos/Vector/build/CMakeFiles/driver_vector.dir

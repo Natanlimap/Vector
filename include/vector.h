@@ -25,36 +25,35 @@ namespace sc{ //sequence container
             typedef T& reference;           //!< Reference to the value type.
             typedef const T& const_reference;           //!< Reference to the value type.
             typedef std::bidirectional_iterator_tag iterator_category; //!< Iterator category.
-                    iterator(T * pt=nullptr ) : ptr{ pt }{}      // it( )
-                    T& operator*(void){return *ptr;}
-                    T*& operator&(void){return ptr;}
-                    T*& operator->(void){return ptr;}
-                    iterator operator= (const iterator rhs){this->ptr = rhs.ptr; }
-                    iterator operator+(size_t offset){return ptr = ptr + offset; }
-                    iterator operator-(size_t offset){ptr -= offset; }
-                    size_t operator-(iterator lhs){return ptr - lhs.ptr;}
-                    iterator operator++(){return ++ptr;}
+                    iterator(T * pt=nullptr) : ptr{ pt }{}      // it( )
+                    reference operator*(){return *ptr;}
+                    pointer operator&(void){return ptr;}
+                    pointer operator->(void){return ptr;}
+                    iterator operator=(const iterator &rhs){this->ptr = rhs.ptr; }
+                    iterator operator=(T& a){*this->ptr = a; }
+                    iterator operator+(size_t offset){return this->ptr = this->ptr + offset; }
+                    iterator operator-(size_t offset){ptr = ptr - offset; }
+                    size_t operator-(const iterator& lhs){return this->ptr - lhs.ptr;}
+                    iterator& operator++() { ++ptr; return *this;}
                     iterator operator++(int){return ptr++;}
-                    iterator operator--(){return --ptr; }
+                    iterator& operator--() { --ptr; return *this;}
                     iterator operator--(int){return ptr--;}
-                    friend iterator operator+(int n, iterator it){return it+n;}
-                    friend iterator operator+(iterator it, int n){return n + it;}
-                    friend iterator operator-(int n, iterator it){return it-n;}
-                    friend iterator operator-(iterator it, int n){return n-it;}
 
+                    friend size_t operator-(T *a, const iterator &lhs){return (a - lhs.ptr);} //distance
 
-
-                    bool operator==(const iterator& other) const{return *this->ptr == *other.ptr;}
-                    bool operator!=(const iterator& other) const{return *this->ptr != *other.ptr;}
-
-                    bool operator>(const iterator rhs){return this->ptr > rhs.ptr;}
-                    bool operator<(const iterator rhs){return this->ptr < rhs.ptr;}
-          
+                    bool operator==(const iterator& rhs) const {return *this->ptr == *rhs.ptr;}
+                    bool operator!=(const iterator& rhs) const {return *this->ptr != *rhs.ptr;}
+                    bool operator>(const iterator &rhs) const {return this->ptr > rhs.ptr;}
+                    bool operator<(const iterator &rhs) const {return this->ptr < rhs.ptr;}
+                    bool operator<=(const iterator &rhs) const {return this->ptr <= rhs.ptr;}
 
      };
+
+    public:
+
      class const_iterator{
         private:
-        T *ptr;
+        const T *ptr;
         public: 
           
             typedef std::ptrdiff_t difference_type; //!< Difference type used to calculated distance between iterators.
@@ -69,17 +68,17 @@ namespace sc{ //sequence container
                     const iterator operator= (const iterator rhs){this->ptr = rhs.ptr; }
                     const iterator operator+(size_t offset){return ptr = ptr + offset; }
                     const iterator operator-(size_t offset){ptr -= offset; }
-                    const iterator operator-(const iterator rhs){this->ptr = this->ptr - rhs.ptr; }
-                   const iterator operator++(){return ++ptr;}
+                    const iterator operator-(const iterator &rhs){this->ptr = this->ptr - rhs.ptr; }
+                    const iterator& operator++() { ++ptr; return *this;}
                     const iterator operator++(int){return ptr++;}
-                    const iterator operator--(){return --ptr; }
+                    const iterator& operator--() { --ptr; return *this;}
                     const iterator operator--(int){return ptr--;}
 
                   
                     bool operator==(const iterator& other) const{return *this->ptr == *other.ptr;}
                     bool operator!=(const iterator& other) const{return *this->ptr != *other.ptr;}
-                    const bool operator>(const iterator rhs){return this->ptr > rhs.ptr;}
-                    const bool operator<(const iterator rhs){return this->ptr < rhs.ptr;}
+                    bool operator>(const iterator rhs) const {return this->ptr > rhs.ptr;}
+                    bool operator<(const iterator rhs) const {return this->ptr < rhs.ptr;}
           
       
      };
@@ -100,9 +99,9 @@ namespace sc{ //sequence container
                 m_data[i] = m_old[i]; 
             }
         }
-         vector(size_t a){    //constructor copy
+         vector(size_t a){    
             m_capacity = a;
-            m_end = a;
+            m_end = 0;
             m_data = new T[m_capacity];
             for(size_t i = 0; i<m_end;i++){
                 m_data[i] = T();
@@ -127,22 +126,6 @@ namespace sc{ //sequence container
         }
         ~vector(){
             delete[]m_data;
-        }
-        vector& operator=( const vector& other ){
-            m_capacity = other.capacity();
-            m_end = other.size();
-            m_data = new T[m_capacity];
-            for(size_t i = 0; i < m_end;i++){
-                m_data[i] = other[i];
-            }
-        }
-        vector& operator=( std::initializer_list<T> ilist ){
-            m_capacity = ilist.capacity();
-            m_end = ilist.size();
-            m_data = new T[m_capacity];
-            for(size_t i = 0; i < m_end;i++){
-                m_data[i] = ilist[i];
-            }
         }
         void reserve(size_t new_cap){
             if(m_capacity == 0){
@@ -213,10 +196,10 @@ namespace sc{ //sequence container
                 return m_data[index];
         }
       
-       friend bool operator==(const vector<T>& lhs, const vector<T>& rhs){
-                if(lhs.size() == rhs.size()){
-                    for(size_t i = 0; i < lhs.size(); i++){
-                        if(lhs[i] != rhs[i]){
+        bool operator==(const vector<T>& other) const {
+                if(m_end == other.size()){
+                    for(size_t i = 0; i < m_end; i++){
+                        if(m_data[i] != other[i]){
                             return false;
                         }
                     }
@@ -226,10 +209,10 @@ namespace sc{ //sequence container
                     return false;
                 }
             }
-        friend bool operator!= (const vector<T>& lhs, const vector<T>& rhs){
-                if(lhs.size() == rhs.size()){
-                    for(size_t i = 0; i < lhs.size(); i++){
-                        if(lhs[i] != rhs[i]){
+         bool operator!=(const vector<T>& other) const {
+                if(m_end == other.size()){
+                    for(size_t i = 0; i < m_end; i++){
+                        if(m_data[i] != other[i]){
                             return true;
                         }
                     }
@@ -285,19 +268,12 @@ namespace sc{ //sequence container
             }
             this->m_data[0] = e;
         }  
-        void insert (iterator position, const T& val){
+        void insert (iterator &position, const T& val){
            if(full()){
                 reserve(m_capacity*2);
             }
-            m_end++;
-            T *last;
-            last = &m_data[m_end+1];
-            while(position>last){
-                *(last) = *(last-1);
-                last--;
-             }
-            *position = val;
-
+            *position = 2;
+            std::cout<<*position<<std::endl; 
         }
         void assign( size_t count, const T & value ){
             reserve(count);
@@ -313,9 +289,6 @@ namespace sc{ //sequence container
 
         }
        
-        iterator begin(){return iterator(&m_data[0]);}
-        iterator end(){return iterator(&m_data[m_end]);}
-        
         void erase(iterator it){
             T *first;
             T *last;
@@ -326,6 +299,10 @@ namespace sc{ //sequence container
                 first++;
             }
         }
+        iterator begin(){return &m_data[0];}
+        iterator end(){return &m_data[m_end-1];}
+        const_iterator cbegin()const{return &m_data[0];}
+        const_iterator cend()const{return &m_data[m_end];}
 
     };
 }

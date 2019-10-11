@@ -9,7 +9,7 @@ include_directories(${GTEST_INCLUDE_DIRS})
 
 #--------------------------------
 # This is for old cmake versions
-set (CMAKE_CXX_STANDARD 17)
+#set (CMAKE_CXX_STANDARD 11)
 #--------------------------------
 
 #=== SETTING VARIABLES ===#
@@ -22,14 +22,16 @@ include_directories( include )
 
 #=== Test target ===
 
-#However, the file(GLOB...) allows for wildcard additions:
-file(GLOB SOURCES_TEST "test/*.cpp")
-#
-add_executable(run_tests ${SOURCES_TEST})
-
+# Esse eh o primeiro "target" que gera o programa que executa os testes.
+add_executable(run_tests "test/main.cpp")
 # Link with the google test libraries.
 target_link_libraries(run_tests PRIVATE ${GTEST_LIBRARIES} PRIVATE pthread )
-
-#define C++11 as the standard.
 #set_property(TARGET run_tests PROPERTY CXX_STANDARD 17)
-target_compile_features(run_tests PUBLIC cxx_std_17)
+target_compile_features(run_tests PUBLIC cxx_std_11)
+
+
+# Esse eh o primeiro "target" que gera a aplicação de utiliza o vector apenas para depuração.
+add_executable(driver_vector "src/app2.cpp")
+#define C++11 as the standard.
+target_compile_features(driver_vector PUBLIC cxx_std_11)
+

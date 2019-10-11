@@ -1,0 +1,55 @@
+Determining if the pthread_create exist failed with the following output:
+Change Dir: /home/natan/Documentos/Vector/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_1fe65/fast"
+/usr/bin/make -f CMakeFiles/cmTC_1fe65.dir/build.make CMakeFiles/cmTC_1fe65.dir/build
+make[1]: Entering directory '/home/natan/Documentos/Vector/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_1fe65.dir/CheckSymbolExists.cxx.o
+/usr/bin/c++     -o CMakeFiles/cmTC_1fe65.dir/CheckSymbolExists.cxx.o -c /home/natan/Documentos/Vector/build/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx
+Linking CXX executable cmTC_1fe65
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1fe65.dir/link.txt --verbose=1
+/usr/bin/c++       CMakeFiles/cmTC_1fe65.dir/CheckSymbolExists.cxx.o  -o cmTC_1fe65 
+CMakeFiles/cmTC_1fe65.dir/CheckSymbolExists.cxx.o: Na função "main":
+CheckSymbolExists.cxx:(.text+0x1b): referência não definida para "pthread_create"
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_1fe65.dir/build.make:97: recipe for target 'cmTC_1fe65' failed
+make[1]: *** [cmTC_1fe65] Error 1
+make[1]: Leaving directory '/home/natan/Documentos/Vector/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_1fe65/fast' failed
+make: *** [cmTC_1fe65/fast] Error 2
+
+File /home/natan/Documentos/Vector/build/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/natan/Documentos/Vector/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_2f1a7/fast"
+/usr/bin/make -f CMakeFiles/cmTC_2f1a7.dir/build.make CMakeFiles/cmTC_2f1a7.dir/build
+make[1]: Entering directory '/home/natan/Documentos/Vector/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_2f1a7.dir/CheckFunctionExists.cxx.o
+/usr/bin/c++    -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_2f1a7.dir/CheckFunctionExists.cxx.o -c /home/natan/Documentos/Vector/build/CMakeFiles/CheckLibraryExists/CheckFunctionExists.cxx
+Linking CXX executable cmTC_2f1a7
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2f1a7.dir/link.txt --verbose=1
+/usr/bin/c++   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_2f1a7.dir/CheckFunctionExists.cxx.o  -o cmTC_2f1a7 -lpthreads 
+/usr/bin/ld: não foi possível localizar -lpthreads
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_2f1a7.dir/build.make:97: recipe for target 'cmTC_2f1a7' failed
+make[1]: *** [cmTC_2f1a7] Error 1
+make[1]: Leaving directory '/home/natan/Documentos/Vector/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_2f1a7/fast' failed
+make: *** [cmTC_2f1a7/fast] Error 2
+
+

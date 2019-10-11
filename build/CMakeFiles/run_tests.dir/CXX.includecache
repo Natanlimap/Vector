@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../include/vector.h
+iostream
+-
+cstdlib
+-
+initializer_list
+-
+algorithm
+-
+
+/home/natan/Documentos/Vector/test/main.cpp
+iterator
+-
+functional
+-
+algorithm
+-
+gtest/gtest.h
+/home/natan/Documentos/Vector/test/gtest/gtest.h
+vector.h
+/home/natan/Documentos/Vector/test/vector.h
+

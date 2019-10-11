@@ -1,7 +1,7 @@
 #include <iterator>             // std::begin(), std::end()
 #include <functional>           // std::function
 #include <algorithm>            // std::min_element
-#include "../gtest/gtest.h"        // gtest lib
+#include "gtest/gtest.h"        // gtest lib
 #include "vector.h"   // header file for tested functions
 
 
@@ -16,7 +16,7 @@ TEST(IntVector, DefaultConstructor)
 
     EXPECT_EQ( vec.size(), 0 );
     EXPECT_EQ( vec.capacity(), 0 );
-    EXPECT_TRUE( vec.empty() );
+    EXPECT_TRUE(vec.empty() );
 }
 
 
@@ -24,8 +24,8 @@ TEST(IntVector, ConstructorSize)
 {
     sc::vector<int>vec(10);
 
-    EXPECT_EQ( vec.size(), 0 );
     EXPECT_EQ( vec.capacity(), 10 );
+    EXPECT_EQ( vec.size(), 0 );
     EXPECT_TRUE( vec.empty() );
 }
 
@@ -40,25 +40,25 @@ TEST(IntVector, ListConstructor)
         ASSERT_EQ( i+1, vec[i] );
 }
 
-// TEST(IntVector, RangeConstructor)
-// {
-//     // Range = the entire vector.
-//     sc::vector<int> vec{ 1, 2, 3, 4, 5 };
-//     sc::vector<int> vec2( vec.begin(), vec.end() );
-//     ASSERT_EQ( vec2.size(), 5 );
-//     EXPECT_FALSE( vec.empty() );
+TEST(IntVector, RangeConstructor)
+{
+    // Range = the entire vector.
+    sc::vector<int> vec{ 1, 2, 3, 4, 5 };
+    sc::vector<int> vec2( vec.begin(), vec.end() );
+    ASSERT_EQ( vec2.size(), 5 );
+    EXPECT_FALSE( vec.empty() );
 
-//     for( auto i{0u} ; i < vec.size() ; ++i )
-//         ASSERT_EQ( i+1, vec[i] );
+    for( auto i{0u} ; i < vec.size() ; ++i )
+        ASSERT_EQ( i+1, vec[i] );
 
-//     // Range is part of the vector.
-//     sc::vector<int> vec3( std::next( vec.begin(), 1 ), std::next( vec.begin(), 3 ) );
-//     ASSERT_EQ( vec3.size(), 2 );
-//     EXPECT_FALSE( vec3.empty() );
+    // Range is part of the vector.
+    sc::vector<int> vec3( std::next( vec.begin(), 1 ), std::next( vec.begin(), 3 ) );
+    ASSERT_EQ( vec3.size(), 2 );
+    EXPECT_FALSE( vec3.empty() );
 
-//     for( auto i{0u} ; i < vec3.size() ; ++i )
-//         ASSERT_EQ( vec[i+1], vec3[i] );
-// }
+    for( auto i{0u} ; i < vec3.size() ; ++i )
+        ASSERT_EQ( vec[i+1], vec3[i] );
+}
 
 TEST(IntVector, CopyConstructor)
 {
@@ -273,60 +273,60 @@ TEST(IntVector, FrontConst)
     ASSERT_EQ( vec2.front(), 'a' );
 }
 
-// TEST(IntVector, Back)
-// {
-//     // #1 From an empty vector.
-//     sc::vector<int> vec{ 1, 2, 3, 4, 5 };
+TEST(IntVector, Back)
+{
+    // #1 From an empty vector.
+    sc::vector<int> vec{ 1, 2, 3, 4, 5 };
 
-//     auto i{5};
-//     while( not vec.empty() )
-//     {
-//         auto current_size = vec.size();
-//         ASSERT_EQ( vec.back(), i-- );
-//         vec.back() = 100;
-//         ASSERT_EQ( current_size, vec.size() );
-//         ASSERT_EQ( vec[vec.size()-1], 100 );
-//         vec.pop_back();
-//     }
-// }
+    auto i{5};
+    while( not vec.empty() )
+    {
+        auto current_size = vec.size();
+        ASSERT_EQ( vec.back(), i-- );
+        vec.back() = 100;
+        ASSERT_EQ( current_size, vec.size() );
+        ASSERT_EQ( vec[vec.size()-1], 100 );
+        vec.pop_back();
+    }
+}
 
-// TEST(IntVector, BackConst)
-// {
-//     // #1 From an empty vector.
-//     const sc::vector<int> vec{ 1, 2, 3, 4, 5 };
-//     ASSERT_EQ( vec.back(), 5 );
+TEST(IntVector, BackConst)
+{
+    // #1 From an empty vector.
+    const sc::vector<int> vec{ 1, 2, 3, 4, 5 };
+    ASSERT_EQ( vec.back(), 5 );
 
-//     const sc::vector<char> vec2{ 'a', 'e', 'i', 'o', 'u' };
-//     ASSERT_EQ( vec2.back(), 'u' );
-// }
+    const sc::vector<char> vec2{ 'a', 'e', 'i', 'o', 'u' };
+    ASSERT_EQ( vec2.back(), 'u' );
+}
 
-// TEST(IntVector, AssignCountValue)
-// {
-//     // #1 From an empty vector.
-//     sc::vector<long> vec{ 1, 2, 3, 4, 5 };
+TEST(IntVector, AssignCountValue)
+{
+    // #1 From an empty vector.
+    sc::vector<long> vec{ 1, 2, 3, 4, 5 };
 
-//     ASSERT_EQ( vec.size(), 5 );
-//     auto original_cap = vec.capacity();
+    ASSERT_EQ( vec.size(), 5 );
+    auto original_cap = vec.capacity();
 
-//     // Test assign with a count smaller than the original vec size.
-//     long value{-4};
-//     vec.assign( 3, value );
-//     ASSERT_EQ( vec.size(), 3 );
-//     // Capacity should be the same.
-//     EXPECT_EQ( vec.capacity(), original_cap );
-//     // Verify the elements.
-//     for ( auto i{0u} ; i < vec.size() ; ++i )
-//         ASSERT_EQ( value, vec[i] );
+    // Test assign with a count smaller than the original vec size.
+    long value{-4};
+    vec.assign( 3, value );
+    ASSERT_EQ( vec.size(), 3 );
+    // Capacity should be the same.
+    EXPECT_EQ( vec.capacity(), original_cap );
+    // Verify the elements.
+    for ( auto i{0u} ; i < vec.size() ; ++i )
+        ASSERT_EQ( value, vec[i] );
 
-//     // Test assign with a count GREATER than the original vec size.
-//     long new_value{42};
-//     vec.assign( 10, new_value );
-//     ASSERT_EQ( vec.size(), 10 );
-//     EXPECT_GE( vec.capacity(), original_cap );
-//     // Verify the elements.
-//     for ( auto i{0u} ; i < vec.size() ; ++i )
-//         ASSERT_EQ( new_value, vec[i] );
-// }
+    // Test assign with a count GREATER than the original vec size.
+    long new_value{42};
+    vec.assign( 10, new_value );
+    ASSERT_EQ( vec.size(), 10 );
+    EXPECT_GE( vec.capacity(), original_cap );
+    // Verify the elements.
+    for ( auto i{0u} ; i < vec.size() ; ++i )
+        ASSERT_EQ( new_value, vec[i] );
+ }
 
 
 
@@ -384,20 +384,20 @@ TEST(IntVector, AtLHS)
     ASSERT_TRUE( worked );
 }
 
-// TEST(IntVector, Capacity)
-// {
-//     sc::vector<int> vec { 1, 2, 3, 4, 5 };
+TEST(IntVector, Capacity)
+{
+    sc::vector<int> vec { 1, 2, 3, 4, 5 };
 
-//     ASSERT_EQ( vec.capacity(), 5u );
-//     vec.reserve(10);
-//     ASSERT_EQ( vec.capacity(), 10u );
-//     vec.reserve(3); // Nothing happens here.
-//     ASSERT_EQ( vec.capacity(), 10u );
+    ASSERT_EQ( vec.capacity(), 5u );
+    vec.reserve(10);
+    ASSERT_EQ( vec.capacity(), 10u );
+    vec.reserve(3); // Nothing happens here.
+    ASSERT_EQ( vec.capacity(), 10u );
 
-//     auto i{0};
-//     for( const auto & e : vec )
-//         ASSERT_EQ( e, ++i );
-// }
+    auto i{0};
+    for( const auto & e : vec )
+        ASSERT_EQ( e, ++i );
+}
 
 TEST(IntVector, ShrinkToFit)
 {
@@ -512,19 +512,19 @@ TEST(IntVector, ShrinkToFit)
 //     ASSERT_EQ( vec1 , ( sc::vector<int>{ 1, 2, 3, 4, 5 } ) );
 // }
 
-// // TEST(IntVector, AssignCountValue2)
-// // {
-// //         // Initial vector.
-// //         sc::vector<char> vec { 'a', 'b', 'c', 'd', 'e' };
+// TEST(IntVector, AssignCountValue2)
+// {
+//         // Initial vector.
+//         sc::vector<char> vec { 'a', 'b', 'c', 'd', 'e' };
 
-// //         // assigning count values to sc::vector, with count < size().
-// //         vec.assign( 3, 'x' );
-// //         ASSERT_EQ( vec , ( sc::vector<char>{ 'x', 'x', 'x' } ) );
-// //         ASSERT_EQ( vec.size() , 3 );
-// //         ASSERT_EQ( vec.capacity() , 5 );
+//         // assigning count values to sc::vector, with count < size().
+//         vec.assign( 3, 'x' );
+//         ASSERT_EQ( vec , ( sc::vector<char>{ 'x', 'x', 'x' } ) );
+//         ASSERT_EQ( vec.size() , 3 );
+//         ASSERT_EQ( vec.capacity() , 5 );
 
-// //         // assigning count values to sc::vector, with count , size().
-// //         vec = { 'a', 'b', 'c', 'd', 'e' };
+//         // assigning count values to sc::vector, with count , size().
+//         vec = { 'a', 'b', 'c', 'd', 'e' };
 //         vec.assign( 5, 'y' );
 //         ASSERT_EQ( vec , ( sc::vector<char>{ 'y','y','y','y','y' } ) );
 //         ASSERT_EQ( vec.size() , 5 );
