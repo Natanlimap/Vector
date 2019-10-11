@@ -26,11 +26,11 @@ namespace sc{ //sequence container
             typedef const T& const_reference;           //!< Reference to the value type.
             typedef std::bidirectional_iterator_tag iterator_category; //!< Iterator category.
                     iterator(T * pt=nullptr) : ptr{ pt }{}      // it( )
-                    reference operator*(){return *ptr;}
-                    pointer operator&(void){return ptr;}
-                    pointer operator->(void){return ptr;}
-                    iterator operator=(const iterator &rhs){this->ptr = rhs.ptr; }
-                    iterator operator=(T& a){*this->ptr = a; }
+                    reference operator*(){return *ptr;} //returns the pointer`s value
+                    pointer operator&(void){return ptr;}//returns the pointer`s reference
+                    pointer operator->(void){return ptr;}//returns the pointer`s reference
+                    iterator operator=(const iterator &rhs){this->ptr = rhs.ptr; } //returns the pointer`s value
+                    iterator operator=(T& a){*this->ptr = a; } 
                     iterator operator+(size_t offset){return this->ptr = this->ptr + offset; }
                     iterator operator-(size_t offset){ptr = ptr - offset; }
                     size_t operator-(const iterator& lhs){return this->ptr - lhs.ptr;}
@@ -107,7 +107,7 @@ namespace sc{ //sequence container
                 m_data[i] = T();
             }
         }
-         vector(const std::initializer_list<T> & il ){ //inicializador de informações
+         vector(const std::initializer_list<T> & il ){ //Create vector from a list
             m_capacity = il.size();
             m_end = il.size();
             m_data = new T[m_capacity];
@@ -116,7 +116,7 @@ namespace sc{ //sequence container
             }
         }
         template< typename InputIt >
-        vector( InputIt first, InputIt last ){
+        vector( InputIt first, InputIt last ){ //Create vector from a range
             m_capacity = last - first ;
             m_end = m_capacity;
             m_data = new T[m_capacity];
@@ -124,10 +124,10 @@ namespace sc{ //sequence container
                 this->m_data[i] = *(first + i);
             }
         }
-        ~vector(){
+        ~vector(){ //vector's destructor
             delete[]m_data;
         }
-        void reserve(size_t new_cap){
+        void reserve(size_t new_cap){ //changes the vector's size
             if(m_capacity == 0){
                 new_cap = 1;
             }
@@ -150,28 +150,28 @@ namespace sc{ //sequence container
              }
         }
    
-        void pop_back(){
+        void pop_back(){  //delete the last element
             if(m_end>0){
                 m_end--;
             }
         }
-        void pop_front(){
+        void pop_front(){ //delete the frist element
             for(size_t i = 0 ; i< m_end;i++){
                 m_data[i] = m_data[i+1];
             }
             m_end--;
         }
 
-        size_t size() const{
+        size_t size() const{ //return the vector size
             return m_end;
         }
 
-        size_t capacity() const{
+        size_t capacity() const{ //return the vector capacity
             return m_capacity;
 
         }
         
-        void print(){
+        void print(){ //print the vector
             size_t i = 0;
             std::cout <<"vector ->> [";
             while(i < m_end){
@@ -182,21 +182,21 @@ namespace sc{ //sequence container
             std::cout<<std::endl;
         }
 
-        const T& operator[]( size_t  index ) const{
+        const T& operator[]( size_t  index ) const{ //this overload the operator [] const
              return m_data[index];
         }
 
-        T& operator[]( size_t  index ){
+        T& operator[]( size_t  index ){ //this overload the operator [] const
              return m_data[index];
         }   
 
-        T& at( size_t  index ) const{
+        T& at( size_t  index ) const{  //this return a data of a specific index of vector
                 if ( index >= m_end)
                    throw std::out_of_range("Indice invalido!");                
                 return m_data[index];
         }
       
-        bool operator==(const vector<T>& other) const {
+        bool operator==(const vector<T>& other) const { //this overload the operator == 
                 if(m_end == other.size()){
                     for(size_t i = 0; i < m_end; i++){
                         if(m_data[i] != other[i]){
@@ -209,7 +209,7 @@ namespace sc{ //sequence container
                     return false;
                 }
             }
-         bool operator!=(const vector<T>& other) const {
+         bool operator!=(const vector<T>& other) const { //this overload the operator != 
                 if(m_end == other.size()){
                     for(size_t i = 0; i < m_end; i++){
                         if(m_data[i] != other[i]){
@@ -223,43 +223,43 @@ namespace sc{ //sequence container
                 }
             }
 
-        const T& front() const{
+        const T& front() const{ //this return the data of the first element
             return m_data[0];
 
         }
-        T& front(){
+        T& front(){ //this return the data of the first element
             return m_data[0];
 
         }
-        const T& back() const{
+        const T& back() const{  //this return the data of the last element
             return m_data[m_end-1];
 
         }
-        T& back(){
+        T& back(){ //this return the data of the last element
             return m_data[m_end-1];
 
         }
 
-        bool empty(){
+        bool empty(){ //this returns a boolean for the empty parameter of the vector
             return m_end == 0;
         }
-        bool full(){
+        bool full(){ //this returns a boolean for the full parameter of the vector
             return m_end == m_capacity;
         }
       
-        void clear(){
+        void clear(){ //this clear the vector data (I decided to match the data to default)
             for(size_t i =0; i<m_end;i++){
                 m_data[i]=T();
             }
             m_end = 0;
         }
-        void push_back(const T & e){
+        void push_back(const T & e){ //this insert a element in the back of the vector
             if(full()){
                 reserve(m_capacity*2);
             }
                 this->m_data[m_end++] = e;
         }
-        void push_front(const T & e){
+        void push_front(const T & e){ //this insert a element in front of the vector
             if(full()){
                 reserve(m_capacity*2);
             }   
@@ -268,7 +268,7 @@ namespace sc{ //sequence container
             }
             this->m_data[0] = e;
         }  
-        void insert (iterator &position, const T& val){
+        void insert (iterator position, const T& val){
            if(full()){
                 reserve(m_capacity*2);
             }
@@ -300,7 +300,7 @@ namespace sc{ //sequence container
             }
         }
         iterator begin(){return &m_data[0];}
-        iterator end(){return &m_data[m_end-1];}
+        iterator end(){return &m_data[m_end];}
         const_iterator cbegin()const{return &m_data[0];}
         const_iterator cend()const{return &m_data[m_end];}
 
