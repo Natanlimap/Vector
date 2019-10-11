@@ -1,5 +1,5 @@
 # Programming Project #1: Implementing the List Abstract Data Type 
-In this project was implemented a class called vector that follows the ADT list design and store elements dynamically. Further, was used the Google tests to verify the correct functioning of each method.
+In this project was implemented a class called vector that follows the ADT list design and store elements dynamically. Further, was used the Google Tests to verify the correct functioning of each method.
 
 ## Getting Started
 
