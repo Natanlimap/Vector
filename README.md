@@ -1,6 +1,5 @@
-# Project Title
-
-One Paragraph of project description goes here
+# Programming Project #1: Implementing the List Abstract Data Type 
+In this project was implemented a class called vector that follows the ADT list design and store elements dynamically. Further, was used the Google tests to verify the correct functioning of each method.
 
 ## Getting Started
 
@@ -10,31 +9,30 @@ These instructions will get you a copy of the project up and running on your loc
 
 What things you need to install the software and how to install them
 
-```
-Give examples
-```
 
 ### Installing
-
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
-
+1. Clone the repo
+```sh
+git clone https:://github.com/natanlimap/Vector.git
 ```
-Give the example
-```
+2. On project's root path, delete "build"  
 
-And repeat
-
+3. Use this command on terminal
+```sh
+cmake -S . -Bbuild
 ```
-until finished
-```
+4. Enter in the build path
 
-End with an example of getting some data out of the system or using it for a little demo
+5. On terminal, use the command
+```sh
+make
+```
+6. install google tests
+```sh
+https://github.com/google/googletest
+```
 
 ## Running the tests
-
-Explain how to run the automated tests for this system
 
 ### Break down into end to end tests
 
@@ -72,9 +70,7 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+* **Natan Pereira** - (https://github.com/Natanlimap)
 
 ## License
 
