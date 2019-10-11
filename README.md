@@ -1,14 +1,3 @@
-<!-- TABLE OF CONTENTS -->
-# Table of Contents
-
-* [About the project](# About_the_Project)
-* [Installing](# Installing)
-* [Running the tests](# Running-the-tests)
-* [The tests](# The-tests)
-* [Author](# Author)
-* [License](# License)
-* [Acknowledgments](# Acknowledgments)
-
 # About the project
   This project was requested by a basic data structure teacher, Selan Rodrigues dos Santos, from UFRN, with the porpuse to implement a List Abstract Data Type.
   In this project was implemented a class called vector that follows the ADT list design and store elements dynamically. Further, was used the Google Tests to verify the correct functioning of each method.
