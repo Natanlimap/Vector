@@ -1,5 +1,5 @@
 <!-- TABLE OF CONTENTS -->
-##Table of Contents
+## Table of Contents
 
 * [About the project](#About the Project)
 * [Installing](### Installing)
