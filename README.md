@@ -1,10 +1,10 @@
 <!-- TABLE OF CONTENTS -->
 ## Table of Contents
 
-* [About the project](# About the Project)
+* [About the project](# About-the-Project)
 * [Installing](# Installing)
-* [Running the tests](# Running the tests)
-* [The tests](# The tests)
+* [Running the tests](# Running-the-tests)
+* [The tests](# The-tests)
 * [Author](# Author)
 * [License](# License)
 * [Acknowledgments](# Acknowledgments)
