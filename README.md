@@ -1,7 +1,7 @@
 <!-- TABLE OF CONTENTS -->
 # Table of Contents
 
-* [About the project](# About-the-Project)
+* [About the project](# About_the_Project)
 * [Installing](# Installing)
 * [Running the tests](# Running-the-tests)
 * [The tests](# The-tests)
