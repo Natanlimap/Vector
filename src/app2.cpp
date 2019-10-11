@@ -7,9 +7,11 @@
 
 
 int main () {
-    sc::vector<int> C{1,2,3,4,3};
-    sc::vector<int>::iterator it = C.end();
-    C.insert(it, 2);
+    sc::vector<int> C{1,2};
+    sc::vector<int>::iterator it = C.begin();
     C.print();
+    C.insert(it, 4);
+    C.print();
+
     return 0;
 }

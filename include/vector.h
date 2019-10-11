@@ -268,12 +268,14 @@ namespace sc{ //sequence container
             }
             this->m_data[0] = e;
         }  
-        void insert (iterator position, const T& val){
-           if(full()){
-                reserve(m_capacity*2);
+        void insert(iterator position, const T& val){
+            size_t distance = position - m_data;
+            std::cout<< distance<<std::endl;
+            T *aux;
+            for(size_t i = m_end++; i>distance; i--){
+                m_data[i] = m_data[i-1];
             }
-            *position = 2;
-            std::cout<<*position<<std::endl; 
+            m_data[distance] = val; 
         }
         void assign( size_t count, const T & value ){
             reserve(count);
@@ -298,6 +300,7 @@ namespace sc{ //sequence container
                  *first = *(first+1);
                 first++;
             }
+            m_end--;
         }
         iterator begin(){return &m_data[0];}
         iterator end(){return &m_data[m_end];}
