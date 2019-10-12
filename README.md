@@ -35,10 +35,6 @@ This tests will show if the implementation of each method of vector class is run
 
 * **Natan Pereira** - (https://github.com/Natanlimap)
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
 ## Acknowledgments
 
 It is also important to remind that some parts of this code were inspired by classroom implementations with the presence and participation of the Basic Data Structure 1 discipline's teacher and classmates in 2019.2, taught by Selan Rodrigues dos Santos, from Universidade Federal do Rio Grande do Norte.
