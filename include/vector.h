@@ -278,7 +278,7 @@ namespace sc{ //sequence container
             if(full()){
                 reserve(m_capacity*2);
             }   
-            for(size_t i = ++m_end;i>0;i--){
+            for(size_t i = m_end++;i>0;i--){
                this-> m_data[i] = this->m_data[i-1];
             }
             this->m_data[0] = e;
@@ -317,28 +317,22 @@ namespace sc{ //sequence container
                 
             }
         }
-        // void insert(iterator pos, iterator first, iterator last){
-        //     iterator aux;
-        //     size_t list_distance = last - first;
-        //     size_t distance, count;
-        //     distance = pos - m_data;
-        //     if(full()){
-        //         aux = reserve_it((m_capacity+list_distance)*2);
-        //         pos = aux + distance;
-        //     }  
-        //     distance = pos - m_data;
-        //     std::cout<<distance;
-        //     m_end += list_distance;
-        //     for(size_t i = m_end ; i>distance;i--){
-        //         m_data[i] = m_data[i - list_distance];
-        //     }
+        void insert(iterator pos, iterator first, iterator last){
+            size_t initial = pos - m_data;
+            size_t distance = &m_data[m_end] - pos;
+            size_t tam = last - first;
+            m_end += tam;
 
-        //     count = 0;
-        //     for(size_t i = distance; i < distance + list_distance; i++){
-        //         m_data[i] = *(first + count++);
+            for(size_t i = m_end ; i>initial;i--){
+                m_data[i] = m_data[i - tam];
+            }
+            size_t count = 0;
+             for(size_t i = initial; i < initial + tam; i++){
+                m_data[i] = *(first + count++);
                 
-        //     }
-        // }
+            }
+        }
+        
 
 
 
