@@ -298,33 +298,64 @@ namespace sc{ //sequence container
         }
         void insert(iterator pos, const std::initializer_list<T> & il){
             iterator first;
-            size_t list_distance = il.end() - il.begin(); //tamanho da lista
-            size_t distance, count=0; 
+            size_t list_distance = il.end() - il.begin();
+            size_t distance, count;
+            distance = pos - m_data;
             if(full()){
                 first = reserve_it((m_capacity+list_distance)*2);
-                pos = first + distance; //posicao a ser inserida
+                pos = first + distance;
             }  
-            m_end+=list_distance;
-            for(size_t i = 0;i<m_end;i++){
-                if(i >= distance && i < distance + list_distance-1){
-
-                }else{
-                    m_data[i] = m_data[count];
-                    count++;
-                }
+            distance = pos - m_data;
+            m_end += list_distance;
+            for(size_t i = m_end ; i>distance;i--){
+                m_data[i] = m_data[i - list_distance];
             }
+
             count = 0;
-           for(size_t j = distance; j<distance+list_distance;j++){
-                m_data[j] = *(il.begin() + count);
-                count++;
-           }
+            for(size_t i = distance; i < distance + list_distance; i++){
+                m_data[i] = *(il.begin() + count++);
+                
+            }
         }
+        // void insert(iterator pos, iterator first, iterator last){
+        //     iterator aux;
+        //     size_t list_distance = last - first;
+        //     size_t distance, count;
+        //     distance = pos - m_data;
+        //     if(full()){
+        //         aux = reserve_it((m_capacity+list_distance)*2);
+        //         pos = aux + distance;
+        //     }  
+        //     distance = pos - m_data;
+        //     std::cout<<distance;
+        //     m_end += list_distance;
+        //     for(size_t i = m_end ; i>distance;i--){
+        //         m_data[i] = m_data[i - list_distance];
+        //     }
+
+        //     count = 0;
+        //     for(size_t i = distance; i < distance + list_distance; i++){
+        //         m_data[i] = *(first + count++);
+                
+        //     }
+        // }
+
+
+
          void erase(iterator position){
             size_t distance = position - m_data;
             for(size_t i = distance; i<m_end; i++){
                 m_data[i] = m_data[i+1];
             }
             --m_end;
+        }
+         void erase(iterator first, iterator last){
+            size_t distance;
+            distance = first - m_data;
+            for(size_t i = distance ; i < m_end; i++){
+                m_data[i] = m_data[i + (last - first+1)];
+            }
+            m_end -= last-first+1;
         }
         void assign( size_t count, const T & value ){
             if ( count >= m_capacity )
